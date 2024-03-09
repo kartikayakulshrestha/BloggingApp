@@ -4,7 +4,59 @@ import {useState} from "react"
 //import "./login.css"
 import Link from "next/link"
 import { IoPersonAddSharp } from "react-icons/io5";
+import {useRouter} from "next/navigation";
+import {useHistory} from "next/navigation"
 const page = () => {
+  
+  const [email,setemail]=useState("")
+  const router=useRouter()
+  const [pass,setpass]=useState("")
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+  const handleSumbit = async (e)=>{
+    if(validateEmail(email)){
+      try{
+        let res = await fetch("http://localhost:8000/user/login",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },body:JSON.stringify({
+          
+            email:email,
+            password:pass,
+            
+          
+        })
+      })
+      let x= await res.json()
+      console.log(x)
+      
+        if(x.email && x.password){
+          window.location.href="http://localhost:3000/"
+          alert("logged In ")
+          
+        }else if(x.email){
+
+          alert("Wrong Password")
+          
+        }
+      
+    }catch(err){
+      
+      window.location.href="http://localhost:3000/signin"
+      alert("Please Sign in you don't have a account")
+      console.log("error in Login")
+      
+    }
+    }else{
+      alert("Wrong Email")
+    }
+  }
   return (
     <div>
         <Navbar />
@@ -12,12 +64,12 @@ const page = () => {
             <div className="container d-flex justify-content-center align-items-center " style={{height:"90vh"}} >
                 <div className="card" style={{height:"50vh",width:"40vw",boxShadow:"5px 5px grey"}}>
                   <h1 className="d-flex justify-content-center mt-3"> Login </h1>
-                <form>
+                <form onSubmit={handleSumbit}>
                     
-                    <div className="d-flex justify-content-center mt-3" style={{margin:"10px 20px 10px 20px"}}><input className="form-control" type="text" placeholder="Email"></input></div>
-                    <div className="d-flex justify-content-center mt-3" style={{margin:"10px 20px 10px 20px"}}><input className="form-control" type="password" placeholder="Password"></input></div>
+                    <div className="d-flex justify-content-center mt-3" style={{margin:"10px 20px 10px 20px"}}><input className="form-control" onChange={(e)=>setemail(e.target.value)} value={email} type="text" placeholder="Email" required></input></div>
+                    <div className="d-flex justify-content-center mt-3" style={{margin:"10px 20px 10px 20px"}}><input className="form-control"  onChange={(e)=>setpass(e.target.value)} value={pass} type="password" placeholder="Password" required></input></div>
                     <div className="d-flex justify-content-center mt-3">
-                    <button className="btn btn-dark mt-3">Login <IoPersonAddSharp /></button>
+                    <button className="btn btn-dark mt-3" type="submit" >Login <IoPersonAddSharp /></button>
                    
                     </div>
 

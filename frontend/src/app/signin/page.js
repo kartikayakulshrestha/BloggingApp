@@ -4,13 +4,14 @@ import {useState} from "react"
 import "./login.css"
 import Link from "next/link"
 import { IoPersonAddSharp } from "react-icons/io5";
+import { useRouter } from 'next/navigation'
 
 const page = () => {
   const [first,setfirst]=useState("")
   const [email,setemail]=useState("")
   const [last,setlast]=useState("")
   const [pass,setpass]=useState("")
-  
+  const router = useRouter()
   
   const validateEmail = (email) => {
     return String(email)
@@ -50,6 +51,7 @@ const page = () => {
   return (
     <div>
         <Navbar />
+        
         
             <div className="container d-flex justify-content-center align-items-center " style={{height:"90vh"}} >
                 <div className="card" style={{height:"60vh",width:"40vw",boxShadow:"5px 5px grey"}}>

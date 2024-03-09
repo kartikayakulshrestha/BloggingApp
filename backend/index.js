@@ -111,7 +111,27 @@ app.post("/user/signin",async (req,res)=>{
     res.json(x)
 })
 
+app.post("/user/login",async (req,res)=>{
+    try{
+    let y=await User.findOne({email:req.body.email})
+    let x=await User.findOne({email:req.body.email,password:req.body.password})
 
+
+    if(x){
+        res.json(x)
+    }else if(y || x){
+        res.json({email:y.email,password:undefined})
+    }
+    else{
+        res.json(undefined)
+        console.log("Do not Exist!")
+    }
+    }catch(err){
+        if(err){
+            console.log("Error: in Login")
+        }
+    }
+})
 app.listen(8000,(err)=>{
     if(err){
         console.log("problem")
