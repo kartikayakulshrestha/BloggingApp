@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
 import Link from "next/link"
 import {useState} from "react"
 import { HiUserCircle } from "react-icons/hi2";
@@ -40,7 +40,7 @@ if (data===""){
         id:params.blogid
       })}
     );
-      
+    console.log("hee:",res)
   }catch(err){
       console.log("Error in deleting")
     }

@@ -4,7 +4,8 @@ const mongoose = require("mongoose")
 const cors=require("cors")
 const app = express();
 const compression = require('compression');
-
+const Blog = require("./modal/blogsch")
+const User = require("./modal/user")
 //essentials 
 app.use(bodyParser.urlencoded({ limit:"50mb", extended: false }));
 app.use(bodyParser.json({limit: "50mb" }));
@@ -12,34 +13,9 @@ app.use(cors())
 app.use(compression())
 
 
-// mongoose usage
-mongoose.connect("mongodb://localhost:27017/blogapp")
-
-const blogSchema= mongoose.Schema({
-    title: String,
-    desc: String,
-    author: String,
-    published_date: String,
-    published_time: String,
-    comments: [
-      {
-        user: String,
-        text: String
-      }],
-    likes: Number,
-    
-    read_time_minutes: Number,
-    featured_image: String,
-    tags:Array
-  })
-
-const Blog = new mongoose.model("Blog",blogSchema)
-
-
-
 //function for routes
 async function findAllBlogs(){
-    let res = Blog.find()
+    let res = Blog.find().sort({time:-1})
     return res
 }
 async function blogbyid(id){
@@ -95,8 +71,8 @@ app.post("/blogs/add",async (req,res)=>{
         published_date:x.toDateString(),
         published_time:x.toTimeString(),
         likes:0,
-        tags:req.body.tags
-
+        tags:req.body.tags,
+        time:x.getTime()
     })
     let result= await addblog.save()
     res.send(result)
@@ -123,6 +99,19 @@ app.post("/update/:id",async (req,res)=>{
 })
 
 // server connection
+
+app.post("/user/signin",async (req,res)=>{
+    let user= await new User({
+        firstname:req.body.firstname,
+        lastname:req.body.lastname,
+        email:req.body.email,
+        password:req.body.password,
+    })
+    let x=await user.save()
+    res.json(x)
+})
+
+
 app.listen(8000,(err)=>{
     if(err){
         console.log("problem")

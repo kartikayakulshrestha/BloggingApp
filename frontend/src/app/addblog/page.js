@@ -15,6 +15,8 @@ const AddBlog = () => {
   const [tags,settags]=useState([])
   const [tag,settag]=useState("")
   const [author,setauthor]=useState("")
+  
+
   function handleOnchange(e){
     e.preventDefault()
     var reader = new FileReader()
@@ -43,9 +45,10 @@ const AddBlog = () => {
       img:image,
       tags:tags
     })
-   
+    
   })
   console.log(response)
+  
     }catch(err){
       if(err){
         console.log("err in submit")

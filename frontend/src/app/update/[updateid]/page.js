@@ -1,6 +1,6 @@
 "use client"
 import {useState} from "react"
-import Navbar from "@/app/components/Navbar"
+import Navbar from "../../components/Navbar"
 import { LiaHashtagSolid } from "react-icons/lia";
 import { RxCross2 } from "react-icons/rx";
 import { TbUpload } from "react-icons/tb";

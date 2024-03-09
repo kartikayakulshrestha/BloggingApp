@@ -1,11 +1,11 @@
-import React from 'react'
-
-const notfound = () => {
+import Link from 'next/link'
+ 
+export default function NotFound() {
   return (
-    <div >
-      <h1 style={{display:"flex",justifyContent:"center",alignItems:"center"}}>Mai nahi sahta bhai</h1>
+    <div className='d-flex justify-content-center align-items-center' style={{height:"100vh"}}>
+      <h2>Mai nahi sahta bhai!!! 404 error</h2>
+      <br />
+      <Link href="/">Return Home</Link>
     </div>
   )
 }
-
-export default notfound
