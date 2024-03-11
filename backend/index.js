@@ -6,12 +6,15 @@ const app = express();
 const compression = require('compression');
 const Blog = require("./modal/blogsch")
 const User = require("./modal/user")
+const jwt = require("jsonwebtoken")
+const cookieParser = require("cookie-parser")
+
 //essentials 
 app.use(bodyParser.urlencoded({ limit:"50mb", extended: false }));
 app.use(bodyParser.json({limit: "50mb" }));
 app.use(cors())
 app.use(compression())
-
+app.use(cookieParser())
 
 //function for routes
 async function findAllBlogs(){
@@ -20,6 +23,10 @@ async function findAllBlogs(){
 }
 async function blogbyid(id){
     let res = Blog.find({_id:id})
+    return res
+}
+function tokenCreation(id){
+    let res = jwt.sign({_id:id},"kartikayakulshresthakijaiho!")
     return res
 }
 
@@ -115,9 +122,11 @@ app.post("/user/login",async (req,res)=>{
     try{
     let y=await User.findOne({email:req.body.email})
     let x=await User.findOne({email:req.body.email,password:req.body.password})
-
+    
+    
 
     if(x){
+        
         res.json(x)
     }else if(y || x){
         res.json({email:y.email,password:undefined})
@@ -132,6 +141,11 @@ app.post("/user/login",async (req,res)=>{
         }
     }
 })
+
+app.get("/verify",(req,res)=>{
+    res.json({message:req.cookie})
+})
+
 app.listen(8000,(err)=>{
     if(err){
         console.log("problem")

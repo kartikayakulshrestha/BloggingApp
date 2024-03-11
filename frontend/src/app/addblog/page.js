@@ -1,6 +1,6 @@
 "use client"
 import Navbar from "../components/Navbar";
-import {useState} from "react";
+import {useState ,useEffect} from "react";
 import "./addblog.css"
 import { LiaHashtagSolid } from "react-icons/lia";
 import { RxCross2 } from "react-icons/rx";
@@ -16,7 +16,6 @@ const AddBlog = () => {
   const [tag,settag]=useState("")
   const [author,setauthor]=useState("")
   
-
   function handleOnchange(e){
     e.preventDefault()
     var reader = new FileReader()
@@ -35,7 +34,8 @@ const AddBlog = () => {
     e.preventDefault()
     console.log(e)
     try{
-      const response=await fetch("http://localhost:8000/blogs/add",{method:"Post",
+      
+     const response=await fetch("http://localhost:8000/blogs/add",{method:"Post",
     headers:{
       "Content-Type":"application/json"
     },body:JSON.stringify({
@@ -48,7 +48,11 @@ const AddBlog = () => {
     
   })
   console.log(response)
-  
+/*
+  sdfa@asd.com
+
+  sdaf
+  */
     }catch(err){
       if(err){
         console.log("err in submit")
