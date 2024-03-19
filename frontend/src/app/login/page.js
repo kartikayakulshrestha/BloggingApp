@@ -5,13 +5,14 @@ import "./login.css"
 import Link from "next/link"
 import { IoPersonAddSharp } from "react-icons/io5";
 import {useRouter} from "next/navigation";
-import {useHistory} from "next/navigation"
+import axios from "axios"
 
 const page = () => {
   const [wi,swi]=useState(window.innerWidth)
   const [l,sl]=useState(window.innerWidth>950?"40vw":"95vw")
   const [email,setemail]=useState("")
   const router=useRouter()
+  const [data,setData]=useState("firsst")
   const [pass,setpass]=useState("")
   const validateEmail = (email) => {
     return String(email)
@@ -33,24 +34,35 @@ const page = () => {
     window.addEventListener("resize",xx)
     return ()=>{window.removeEventListener("resize",xx);}
   }
-
   )
-  const handleSumbit = async (e)=>{
+  const handleSumbit = async ()=>{
+    console.log("handle")
+    console.log(email,pass)
+  
+      try{
+        
+      const response = await axios.post("http://localhost:8000/login",{email:email,password:pass},{withCredentials:true});
+      
+      console.log(response)
+      alert(String(response.data.mes))
+      }catch(err){
+        console.log("error in Login",err)
+        
+      }
+    
+  }
+
+  /*
+  const handleSumbit = async ()=>{
+    
+      
+        
+    
     if(validateEmail(email)){
       try{
-        let res = await fetch("http://localhost:8000/user/login",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },body:JSON.stringify({
-          
-            email:email,
-            password:pass,
-            
-          
-        })
-      })
-      let x= await res.json()
+        
+        
+      let x= await axios.post("http://localhost:8000/user/login",{email,password:pass},{withCredentials:true})
       console.log(x)
       
         if(x.email && x.password){
@@ -62,6 +74,8 @@ const page = () => {
           alert("Wrong Password")
           
         }
+    
+    
       
     }catch(err){
       
@@ -73,8 +87,8 @@ const page = () => {
     }else{
       alert("Wrong Email")
     }
-  }
   
+*/
   return (
     <div>
         <Navbar />

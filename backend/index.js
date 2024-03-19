@@ -1,20 +1,26 @@
 const express= require("express");
 const bodyParser = require("body-parser")
-const mongoose = require("mongoose")
+
 const cors=require("cors")
 const app = express();
-const compression = require('compression');
+//const compression = require('compression');
 const Blog = require("./modal/blogsch")
 const User = require("./modal/user")
 const jwt = require("jsonwebtoken")
-const cookieParser = require("cookie-parser")
+const cookie=require("cookie")
+const cookieParser=require("cookie-parser")
+
 
 //essentials 
 app.use(bodyParser.urlencoded({ limit:"50mb", extended: false }));
 app.use(bodyParser.json({limit: "50mb" }));
-app.use(cors())
-app.use(compression())
 app.use(cookieParser())
+app.use(cors({
+    origin:"http://localhost:3000",
+    credentials:true
+}))
+require("dotenv").config()
+//app.use(compression())
 
 //function for routes
 async function findAllBlogs(){
@@ -31,7 +37,23 @@ function tokenCreation(id){
 }
 
 //routes here
-
+app.get("/",async (req,res)=>{
+    try{
+        let token= req.cookies.jwttoken
+        if(token){
+        const x=jwt.verify(req.cookies.jwttoken,process.env.SECRET)
+        const yy= await User.findOne({_id:x.id})
+        
+        res.json({name:`${yy.firstname} ${yy.lastname}`})
+        }else{
+            res.json({name:undefined})
+        }
+    }catch(err){
+        console.log(err)
+        res.json({name:undefined})
+    }
+    
+})
 app.get("/blogs", async (req,res)=>{
     try{
     
@@ -108,6 +130,7 @@ app.post("/update/:id",async (req,res)=>{
 // server connection
 
 app.post("/user/signin",async (req,res)=>{
+    console.log(req.body)
     let user= await new User({
         firstname:req.body.firstname,
         lastname:req.body.lastname,
@@ -118,33 +141,34 @@ app.post("/user/signin",async (req,res)=>{
     res.json(x)
 })
 
-app.post("/user/login",async (req,res)=>{
+app.post("/login",async (req,res)=>{
     try{
+    
     let y=await User.findOne({email:req.body.email})
     let x=await User.findOne({email:req.body.email,password:req.body.password})
     
-    
-
     if(x){
-        
-        res.json(x)
+        const token= await jwt.sign({id:x._id},process.env.SECRET)
+        let rr=cookie.serialize("jwttoken",token)
+        res.setHeader('set-cookie',rr)
+        res.json({he:"sdajflksnda"})
     }else if(y || x){
         res.json({email:y.email,password:undefined})
     }
     else{
+        
         res.json(undefined)
         console.log("Do not Exist!")
     }
     }catch(err){
         if(err){
-            console.log("Error: in Login")
+            console.log("Error: in Login",err)
         }
     }
 })
 
-app.get("/verify",(req,res)=>{
-    res.json({message:req.cookie})
-})
+
+
 
 app.listen(8000,(err)=>{
     if(err){

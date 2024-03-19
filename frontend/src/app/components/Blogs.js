@@ -1,27 +1,34 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import "../globals.css"
 import { FcLike } from "react-icons/fc";
 import { MdOutlineComment } from "react-icons/md";
 import { MdTipsAndUpdates } from "react-icons/md";
-
+import axios from "axios";
 
 
 const Blogs = () => {
     const [data,setdata]=useState("")
+    const [name,setname]=useState("")
     const ramlaal = async ()=>{
-        const res= await fetch("http://localhost:8000/blogs")
-        const ress= await res.json()
+        const res= await axios.get("http://localhost:8000/blogs")
+        const res2= await axios.get("http://localhost:8000/",{withCredentials:true}).then(res=>res.data)
+        const ress= res.data
+        console.log(res2.name)
+        if(res2.name){
+            setname(res2.name)
+        }
         
         setdata(ress)
     }
-    if (data===""){
-        ramlaal()
-    }
     
+    useEffect(()=>{
+        ramlaal();
+    },[])
   return (
     <div>
+        <h3>{name?`Hello!!! ${name}`:null}</h3>
         <h1 className="mb-5" style={{display:"inline"}}>Blogs Recents</h1> <h6 style={{display:"inline"}}>({data.length})</h6>
         <div className="container mt-4">
     {
@@ -39,7 +46,7 @@ const Blogs = () => {
             <div className="card-body">
                 <h5 className="card-title">{e.title}</h5> - <small>{e.author}</small>
                 
-                <p className="card-text">{e.desc.slice(0,100)}...</p>
+                <p className="card-text">{String(e.desc).slice(0,100)}...</p>
                 <div className="row d-flex align-items-end">
                     <div className="col-sm-6">
                     <p className="card-text"><small className="text-body-secondary">{String(e.published_date)}<br />{String(e.published_time).slice(0,5)}{Number((e.published_time).slice(0,2))>=12?"pm":"am"}</small></p>

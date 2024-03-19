@@ -5,7 +5,7 @@ import "./login.css"
 import Link from "next/link"
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useRouter } from 'next/navigation'
-
+import axios from "axios"
 const page = () => {
   const [wi,swi]=useState(window.innerWidth)
   const [l,sl]=useState(window.innerWidth>950?"40vw":"95vw")
@@ -38,27 +38,24 @@ const page = () => {
       );
   };
   const handlesubmit = async (e) =>{
+    console.log("esadf")
     if (validateEmail(email)){
     try{
+      let da={
+        email:email,
+        password:pass,
+        firstname:first,
+        lastname:last 
+    }
+      let res = await axios.post("http://localhost:8000/user/signin",da,{withCredentials:true})
+      let x= res.data
       
-      let res = await fetch("http://localhost:8000/user/signin",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },body:JSON.stringify({
-          
-            email:email,
-            password:pass,
-            firstname:first,
-            lastname:last
-          
-        })
-      })
-      console.log(res)
-      
+      alert("Created User",x)
+     
     }catch(err){
       if(err){
-        console.log("Error on Sign in")
+        console.log("Error on Sign in",err)
+        alert("Some Error Occured")
       }
     }
   }else{
@@ -81,7 +78,7 @@ const page = () => {
                     <div className="d-flex justify-content-center mt-3"   style={{margin:"10px 20px 10px 20px"}}><input className="form-control" onChange={(e)=>setemail(e.target.value)} value={email} type="text" placeholder="Email" required></input></div>
                     <div className="d-flex justify-content-center mt-3"   style={{margin:"10px 20px 10px 20px"}}><input className="form-control" onChange={(e)=>setpass(e.target.value)} value={pass} type="password" placeholder="Password" required></input></div>
                     <div className="d-flex justify-content-center mt-3">
-                    <Link href="/"><button type="submit" className="btn btn-dark mt-3">Sign In <IoPersonAddSharp /></button></Link>
+                    {/*<Link href="/">*/}<button type="submit" className="btn btn-dark mt-3">Sign In <IoPersonAddSharp /></button>{/*</Link>*/}
                     </div>
 
 
