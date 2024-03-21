@@ -1,7 +1,16 @@
 import React from 'react'
-
+import axios from 'axios'
 import Link from "next/link"
 const Navbar = () => {
+    const logout=async ()=>{
+        try{
+            
+        const remove= await axios.get("http://localhost:8000/logout",{withCredentials:true})
+        window.location.href="http://localhost:3000/"
+        }catch(err){
+            console.log(err)
+        }
+    }
   return (
     <div>
         
@@ -22,7 +31,7 @@ const Navbar = () => {
                 
                 </Link>
                 
-                <li className="nav-item dropdown">
+               {/* <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Dropdown
                     </a>
@@ -35,13 +44,17 @@ const Navbar = () => {
         </li>
             <li className="nav-item">
                 <Link className="nav-link" href="/aboutyou">About You</Link>
-            </li>
+            </li>*/}
             </ul>
+            {/*
                     <form className="d-flex" role="search">
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                         <button className="btn btn-outline-warning" type="submit">Search</button>
-                    </form>
+                    </form>*/}
+                    
                     <Link href="/login"><button className='btn btn-success loginbutton' style={{marginLeft:"4px"}}>Login /Sign </button></Link>
+                    <button className='btn btn-outline-primary loginbutton' style={{marginLeft:"4px"}} onClick={logout}>LogOut </button>
+
                 </div>
             </div>
         </nav>

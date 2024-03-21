@@ -128,9 +128,18 @@ app.post("/update/:id",async (req,res)=>{
 })
 
 // server connection
-
-app.post("/user/signin",async (req,res)=>{
-    console.log(req.body)
+app.get("/logout",(req,res)=>{
+    try{
+        res.clearCookie("jwttoken")
+        res.json("nothing")
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+app.post("/signin",async (req,res)=>{
+    
+    
     let user= await new User({
         firstname:req.body.firstname,
         lastname:req.body.lastname,
@@ -138,6 +147,11 @@ app.post("/user/signin",async (req,res)=>{
         password:req.body.password,
     })
     let x=await user.save()
+    if(x){
+        const token= await jwt.sign({id:x._id},process.env.SECRET)
+        let rr=cookie.serialize("jwttoken",token)
+        res.setHeader('set-cookie',rr)
+    }
     res.json(x)
 })
 

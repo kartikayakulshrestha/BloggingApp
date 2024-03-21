@@ -1,8 +1,19 @@
- @media (max-width: 650px) {
+ @media screen and (max-width: 550px)  {
     .cardd {
-      width: 100%;
+      
+      width: 95vw;
+    }
+  }
+
+  @media screen and (min-width: 551px) and (max-width: 900px)  {
+    .cardd {
+    
+      width: 60vw;
     }
   }
   
+  
+  
+    
 
 

@@ -1,6 +1,8 @@
 "use client"
 import Navbar from "./components/Navbar";
 import Blogs from "./components/Blogs";
+import Setsection from "./components/Setsection";
+import "./globals.css"
 export default function Home() {
   return (
    <>
@@ -8,10 +10,10 @@ export default function Home() {
    <div className="container">
       
       <div className="row mt-3">
-        <div className="col-sm-3 bg-primary">
-          <h1>setting section</h1>
+        <div className="col-sm-3">
+          <Setsection />
         </div>
-        <div className="col-9">
+        <div className="col-9 hellow">
           
             
               <Blogs />

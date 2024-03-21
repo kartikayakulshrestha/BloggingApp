@@ -1,6 +1,6 @@
 "use client"
-import {useState} from "react"
-import Navbar from "../../components/Navbar"
+import {useEffect, useState} from "react"
+import Navbar from "../../components/Navbar" 
 import { LiaHashtagSolid } from "react-icons/lia";
 import { RxCross2 } from "react-icons/rx";
 import { TbUpload } from "react-icons/tb";
@@ -21,16 +21,18 @@ const ramlaal = async ()=>{
 const res= await fetch(`http://localhost:8000/blogs/${params.updateid}`)
 const ress= await res.json()
 setdata(ress)
-console.log(ress[0])
+
 settitle(ress[0].title)
 setdesc(ress[0].desc)
 setimage(ress[0].featured_image)
 settags(ress[0].tags)
 setauthor(ress[0].author)
 }
-if (data===""){
-ramlaal()
-}
+useEffect(()=>{
+  ramlaal()
+},[])
+
+
 function handleOnchange(e){
     e.preventDefault()
     var reader = new FileReader()
@@ -47,7 +49,7 @@ function handleOnchange(e){
 
  async function handleSubmit(e){
     e.preventDefault()
-    console.log(e)
+    
     try{
       const response=await fetch(`http://localhost:8000/update/${params.updateid}`,{method:"Post",
     headers:{
@@ -61,7 +63,9 @@ function handleOnchange(e){
     })
    
   })
-  console.log(response)
+  
+  window.location.href="http://localhost:3000/"
+  
     }catch(err){
       if(err){
         console.log("err in submit update")
@@ -97,7 +101,7 @@ function handleOnchange(e){
         
        
         <div className="row mt-3">
-          <div className="col-4">
+          <div className="col-lg-4">
 
           <div className="boximg mt-5" >
               
@@ -122,7 +126,7 @@ function handleOnchange(e){
                 return <div className="some mt-2" key={tags.indexOf(e)}><LiaHashtagSolid size={30}  />{e} <RxCross2 onClick={()=>{removetag(e)}}/>   </div>
             })}
           </div>
-          <input type="text" placeholder="Tags"  className="taginput float-end"  value={tag} onChange={(e)=>{settag(e.target.value)}} onKeyDown={(e)=>{if(String(e.code)==="Enter"){handleenter(e);settag("");console.log(tag)}}}></input>
+          <input type="text" placeholder="Tags"  className="taginput float-end"  value={tag} onChange={(e)=>{settag(e.target.value)}} onKeyDown={(e)=>{if(String(e.code)==="Enter"){handleenter(e);settag("");}}}></input>
 
         
           
@@ -134,7 +138,7 @@ function handleOnchange(e){
 
 
 
-          <div className="col-8">
+          <div className="col-lg-8">
           <input type="text" placeholder="Author Name" required className="authorinput float-end"  value={author} onChange={(e)=>setauthor(e.target.value)}></input>
 
           <br />

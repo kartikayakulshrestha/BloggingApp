@@ -31,6 +31,7 @@ if (data===""){
   const handleDelete = async (e)=>{
     e.preventDefault()
     try{
+      window.location.href="http://localhost:3000/"
       const res = await fetch(`http://localhost:8000/blog/delete/${params.blogid}`,
       {method:"DELETE",
       headers:{
@@ -41,6 +42,7 @@ if (data===""){
       })}
     );
     console.log("hee:",res)
+    
   }catch(err){
       console.log("Error in deleting")
     }
@@ -50,24 +52,32 @@ if (data===""){
   }
   
   return (
-    <div style={{fontFamily:"cursive"}}>
+    <div>
       <Navbar />
-      
+      <div  style={{fontFamily:"cursive"}}>
       {data!=="" && data.map((e)=>{
         return <div key={e._id}>
         <div className='container'>
+        <div className='row'>
+
+          <div className='col-8'>
         <Link href="/" style={{color:"black"}} >
         <BiArrowBack size={40} className='mt-5 '></BiArrowBack>
         </Link>
-        <div className='row'>
-
-            <div className='col-10'><h1 className='mt-1'>{e.title}</h1>
-        Author:{e.author?e.author:"UNKNOWN"}<br /></div>
-        <div className='col-2' > 
-        <a href={`/update/${e._id}`}><button className='btn btn-primary' ><MdTipsAndUpdates size={20}/>Update</button></a>
-        <button className='btn btn-danger d-flex float-end' onClick={(e)=>{if(e.type==="click"){e.preventDefault();handleDelete(e)}}} ><MdDelete size={20}/>  Delete</button></div>
-        
         </div>
+        <div className='col-4 d-flex align-items-end justify-content-end'>
+        <Link href={`/update/${e._id}`}><button className='btn btn-primary mr-4 d-inline-flex' ><MdTipsAndUpdates size={20}/>Update</button></Link>
+        <button className='btn btn-danger d-flex float-end' onClick={(e)=>{if(e.type==="click"){e.preventDefault();handleDelete(e)}}} ><MdDelete size={20}/>  Delete</button>
+        </div>
+        </div>
+        
+
+            <h1 className='mt-1'>{e.title}</h1>
+        Author:{e.author?e.author:"UNKNOWN"}<br />
+        
+       
+        
+        
         
         <img src={e.featured_image} height={600} className="mt-3"  style={{width:"100%",boxShadow:"5px 5px grey",borderRadius:"10px"}}/>
         <br /><br />
@@ -111,7 +121,7 @@ if (data===""){
         
         </div>
       })}
-      
+      </div>
     </div>
   )
 }

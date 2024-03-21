@@ -87,7 +87,7 @@ const AddBlog = () => {
         
        
         <div className="row mt-3">
-          <div className="col-4">
+          <div className="col-lg-4">
 
           <div className="boximg mt-5" >
               
@@ -124,8 +124,8 @@ const AddBlog = () => {
 
 
 
-          <div className="col-8">
-          <input type="text" placeholder="Author Name" required className="authorinput float-end"  onChange={(e)=>setauthor(e.target.value)}></input>
+          <div className="col-lg-8">
+          <input type="text" placeholder="Author Name" required className="authorinput float-end mt-1"  onChange={(e)=>setauthor(e.target.value)}></input>
 
           <br />
           <br />

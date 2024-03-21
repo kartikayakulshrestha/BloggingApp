@@ -3,3 +3,9 @@
 .fff{
     height: 100%;
 }
+@media screen and (max-width: 600px) {
+    .hellow{
+        
+        width: 100%;
+    }
+}
